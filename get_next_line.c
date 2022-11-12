@@ -6,56 +6,58 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:35 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/10 17:16:51 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/12 13:47:46 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*cache_line(char *line, char *buf);
+ssize_t	strlen(char *s);
+int		check_line_feed(char *line, char *buf);
+char *	read_to_line(char *line, int fd);
 
 char	*get_next_line(int fd)
 {
-	ssize_t		r_len;
-	static char		buf[BUFFER_SIZE + 1];
+	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
-	int			lenght;
 
-	lenght = 3;
-	r_len = read(fd, buf, BUFFER_SIZE);
-	if (fd < 0 || BUFFER_SIZE == 0 || r_len <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	cache_line(line, buf);
+	line = read_to_line(line, fd);
+	return (line);
 }
 
-char	*cache_line(char *line, char *buf)
+char *	read_to_line(char *line, int fd)
 {
-	ssize_t		l_len;
-	ssize_t		l_feed;
-	static char	*cache;
+	static char	buf[BUFFER_SIZE + 1];
+	ssize_t		rd_len;
 
-	l_len = 0;
-	while (l_len < BUFFER_SIZE)
+	while (read(fd, buf, BUFFER_SIZE) && !check_line_feed(line, fd))
 	{
-		if (buf[l_len] == '\n')
-		{
-			l_feed = l_len;
-			break;
-		}
-		l_len++;
+		/* code */
 	}
 
-
-
-
-
-
-
-
-
-
-	l_len = 0;
-	while ((*line++ = *buf++) && (l_len++ <= l_feed))
-		;
 }
+
+
+
+
+int	check_lf(char *line, char *buf)
+{
+
+}
+
+ssize_t	strlen(char *s)
+{
+	ssize_t	len;
+
+	len = 0;
+	if (!s)
+		return (NULL);
+	while(*s++ && len++)
+		;
+	return (len);
+}
+
+
 
