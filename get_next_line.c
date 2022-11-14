@@ -6,56 +6,55 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:35 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/10 17:16:51 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/14 19:15:37 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*cache_line(char *line, char *buf);
+	//check len of read bytes
+	//save from buffer to line?
 
 char	*get_next_line(int fd)
 {
-	ssize_t		r_len;
-	static char		buf[BUFFER_SIZE + 1];
+	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
-	int			lenght;
+	int			check;
 
-	lenght = 3;
-	r_len = read(fd, buf, BUFFER_SIZE);
-	if (fd < 0 || BUFFER_SIZE == 0 || r_len <= 0)
-		return (NULL);
-	cache_line(line, buf);
-}
-
-char	*cache_line(char *line, char *buf)
-{
-	ssize_t		l_len;
-	ssize_t		l_feed;
-	static char	*cache;
-
-	l_len = 0;
-	while (l_len < BUFFER_SIZE)
+	check = 0;
+	if (fd < 0 || BUFFER_SIZE < 1)
 	{
-		if (buf[l_len] == '\n')
-		{
-			l_feed = l_len;
-			break;
-		}
-		l_len++;
+		line = buf;
+		while (*line)
+			*line++ = 0;
+		return (NULL);
 	}
-
-
-
-
-
-
-
-
-
-
-	l_len = 0;
-	while ((*line++ = *buf++) && (l_len++ <= l_feed))
-		;
+	line = NULL;
+	while (read(fd, buf, BUFFER_SIZE) > 0 || *buf != 0)
+	{
+		line = save_to_line(line, buf, buf, &check);
+		if (check)
+			break;
+	}
+	return (line);
 }
 
+
+/* #include <stdio.h>
+
+int	main()
+{
+	char	*line;
+	int fd = open("test", O_RDONLY);
+	line = get_next_line(fd);
+	printf("%s", line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	line = get_next_line(fd);
+	printf("%s", line);
+	return 0;
+} */
