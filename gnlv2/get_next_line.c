@@ -6,45 +6,78 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 12:23:34 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/15 18:48:18 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/16 12:55:05 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_to_line(char *buf, char *line);
-ssize_t	pre_lf_len(char *buf);
+char	*read_to_cache(char *buf, char *line);
+ssize_t	s_len(char *s);
+char	*clean_buf(char *line, char *buf);
+
 
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
-	ssize_t		r_len;
+	ssize_t		rd_len;
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	line = read_to_line(buf, 0);
-	// fct para escrever o buf
-	r_len = read(fd, buf, BUFFER_SIZE);
-	while (r_len > 0)
+	// line = read_to_cache(buf, 0);
+	line = clean_buf(line, buf);
+	rd_len = read(fd, buf, BUFFER_SIZE);
+	while (rd_len > 0)
 	{
-		line = read_to_line(buf, line);
+		line = read_to_cache(buf, line);
+		rd_len = read(fd, buf, BUFFER_SIZE);
 	}
 	return (line);
 }
 
-char	*read_to_line(char *buf, char *line)
+char	*clean_buf(char *line, char *buf)
 {
-	ssize_t pre_len;
+	int i;
+
+	i = 0;
+	while (*buf != '\n' && *buf)
+	{
+		*buf = 0;
+		buf++;
+	}
+	*buf = 0;
+	buf++;
+	while (*buf)
+	{
+		*line++ = *buf++;
+		*buf = 0;
+		i++;
+	}
+	return (&(*(line - i)));
+}
+
+
+char	*read_to_cache(char *buf, char *line)
+{
+	ssize_t buf_len;
+	ssize_t line_len;
 	int		i;
+	int		k;
 	char	*cache;
 
 	if (!*buf)
 		return (NULL);
 	i = 0;
-	pre_len = pre_lf_len(buf);
-	cache = (char *)malloc(sizeof(char) * (pre_len /* plus line lenght */+ 1));
-	// loop struct for saving line content
+	buf_len = s_len(buf);
+	line_len = s_len(line);
+	cache = (char *)malloc(sizeof(char) * (line_len + buf_len + 1));
+	while (*line)
+	{
+		*cache++ = *line++;
+		i++;
+	}
+	k = i;
 	while (buf[i])
 	{
 		if (buf[i] == '\n')
@@ -58,21 +91,19 @@ char	*read_to_line(char *buf, char *line)
 	}
 	if (line)
 		free(line);
-	return (cache);
+	return (&(*(cache - k)));
 }
 
-ssize_t	pre_lf_len(char *buf)
+ssize_t	s_len(char *s)
 {
 	ssize_t	len;
-	ssize_t	i;
 
 	len = 0;
-	i = 0;
-	while (buf[i])
+	while (*s)
 	{
-		if (buf[i] == '\n')
+		if (*s == '\n')
 			return (len + 1);
-		i++;
+		s++;
 		len++;
 	}
 	return (len);

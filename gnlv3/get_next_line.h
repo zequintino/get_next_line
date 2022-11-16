@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/15 11:50:13 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/16 11:49:09 by jquintin         ###   ########.fr       */
+/*   Created: 2022/11/15 12:22:53 by jquintin          #+#    #+#             */
+/*   Updated: 2022/11/15 18:50:27 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,10 @@
 # include <stdio.h>
 
 # ifndef  BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 1
 
 # endif
 
 char	*get_next_line(int fd);
-char	*save_to_line(char *line, char *buf, char *cpy_buf, int *check);
-int		s_len(char *s);
 
 #endif

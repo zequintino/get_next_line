@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:45 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/15 17:38:48 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/16 11:44:02 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,42 @@
 
 char	*save_to_line(char *line, char *buf, char *cpy_buf, int *check)
 {
-	char	*tmp;
+	char	*cache;
 	int		i;
 
-	tmp = (char *)malloc(sizeof(char)
-			* ((check_read(buf) + check_read(line)) + 1));
-	if (!tmp)
+	cache = (char *)malloc(sizeof(char)
+			* ((s_len(buf) + s_len(line)) + 1));
+	if (!cache)
 		return (NULL);
 	i = 0;
 	while (line && line[i])
 	{
-		tmp[i] = line[i];
+		cache[i] = line[i];
 		i++;
 	}
 	while (*buf)
 	{
 		if (*check)
 			*cpy_buf++ = *buf;
-		tmp[i++] = *buf;
+		cache[i++] = *buf;
 		*check += (*buf == '\n');
 		*buf++ = 0;
 	}
 	free(line);
-	tmp[i] = '\0';
-	return (tmp);
+	cache[i] = '\0';
+	return (cache);
 }
 
-int	check_read(char *str)
+int	s_len(char *s)
 {
 	int	i;
 
-	if (!str)
+	if (!s)
 		return (0);
 	i = 0;
-	while (str[i])
+	while (s[i])
 	{
-		if (str[i] == '\n')
+		if (s[i] == '\n')
 			return (i + 1);
 		i++;
 	}
