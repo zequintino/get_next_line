@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:45 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/16 11:44:02 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/17 00:56:44 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,11 @@ int	s_len(char *s)
 {
 	int	i;
 
-	if (!s)
+	if (!s || !*s)
 		return (0);
 	i = 0;
-	while (s[i])
-	{
+	while (s[i++])
 		if (s[i] == '\n')
-			return (i + 1);
-		i++;
-	}
+			break ;
 	return (i);
 }
