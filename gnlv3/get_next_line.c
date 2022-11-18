@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 12:23:34 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/16 16:39:46 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/17 15:02:58 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ ssize_t	s_len(char *s)
 	return (len);
 }
 
-int	main(void)
+/* int	main(void)
 {
 	char	*line = NULL;
 	int		fd = open("test", O_RDONLY);
@@ -90,4 +90,4 @@ int	main(void)
 		free(line);
 	}
 	return 0;
-}
+} */
