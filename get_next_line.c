@@ -6,35 +6,35 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:35 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/17 01:12:39 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/18 15:47:35 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-	//check len of read bytes
+	//ln_check len of read bytes
 	//save from buffer to line?
 
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
 	char		*line;
-	int			check;
+	int			ln_check;
 
-	check = 0;
+	ln_check = 0;
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	line = NULL;
-	while (read(fd, buf, BUFFER_SIZE) > 0 || *buf)
+	while (read(fd, buf, BUFFER_SIZE) && !ln_check)
 	{
-		line = save_to_line(line, buf, buf, &check);
-		if (check > 0)
+		line = save_to_line(line, buf, buf, &ln_check);
+		if (ln_check)
 			break ;
 	}
 	return (line);
 }
 
-/* int	main(void)
+int	main(void)
 {
 	char	*line = NULL;
 	int		fd = open("test", O_RDONLY);
@@ -45,4 +45,4 @@ char	*get_next_line(int fd)
 		free(line);
 	}
 	return 0;
-} */
+}

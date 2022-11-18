@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/17 15:05:25 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/18 02:16:12 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/18 16:17:08 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 ssize_t	check_len(char *s, int *nl_check);
 char	*save_line(char *line, char *buf, int *nl_check);
 char	*buf_leftover(char *buf_start, char *buf,
-			char *line/* , int *nl_check */);
+			char *line, int *nl_check);
 
 char	*get_next_line(int fd)
 {
@@ -27,14 +27,17 @@ char	*get_next_line(int fd)
 		return (NULL);
 	nl_check = 0;
 	line = NULL;
-	line = buf_leftover(buf, buf, line/* , &nl_check */);
-	while (read(fd, buf, BUFFER_SIZE) && !nl_check)
+	line = buf_leftover(buf, buf, line, &nl_check);
+	while (nl_check == 0)
+	{
+		read(fd, buf, BUFFER_SIZE);
 		line = save_line(line, buf, &nl_check);
+	}
 	return (line);
 }
 
 char	*buf_leftover(char *buf_start, char *buf,
-			char *line/* , int *nl_check */)
+			char *line, int *nl_check)
 {
 	int	i;
 
@@ -46,10 +49,10 @@ char	*buf_leftover(char *buf_start, char *buf,
 		if (*buf == '\n')
 		{
 			*buf++ = 0;
-			// *nl_check = 1;
+			*nl_check = 1;
 			break ;
 		}
-		// line[i++] = *buf;
+		line[i++] = *buf;
 		*buf++ = 0;
 	}
 	i = 0;
@@ -64,21 +67,29 @@ char	*save_line(char *line, char *buf, int *nl_check)
 {
 	char	*cache;
 	ssize_t	i;
+	ssize_t	k;
 
 	if (!*buf)
 		return (NULL);
+	if (line)
+		free (line);
 	cache = (char *)malloc(sizeof(char)
 			* (check_len(line, nl_check) + check_len(buf, nl_check) + 1));
 	if (!cache)
 		return (NULL);
 	i = 0;
+	k = 0;
+	while (line && line[k])
+	{
+		cache[k] = line[k];
+		k++;
+	}
 	while (buf[i])
 	{
-		cache[i] = buf[i];
+		cache[i + k] = buf[i];
 		i++;
 	}
-	cache[i] = '\0';
-	free (line);
+	cache[i + k] = '\0';
 	return (cache);
 }
 
@@ -106,6 +117,9 @@ int	main(void)
 {
 	char	*line = NULL;
 	int		fd = open("test", O_RDONLY);
+	line = get_next_line(fd);
+	printf("\n(after fct call) = %s", line);
+	free(line);
 	line = get_next_line(fd);
 	printf("\n(after fct call) = %s", line);
 	free(line);
