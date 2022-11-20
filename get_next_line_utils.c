@@ -6,52 +6,55 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:45 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/18 15:52:45 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/20 03:07:44 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*save_to_line(char *line, char *buf, char *cpy_buf, int *ln_check)
+char	*save_line(char *line, char *new_buf, char *buf, int *line_found)
 {
-	char	*cache;
+	char	*buf_cache;
 	int		i;
 
-	cache = (char *)malloc(sizeof(char)
-			* ((s_len(buf) + s_len(line)) + 1));
-	if (!cache)
-		return (NULL);
 	i = 0;
+	*line_found = 0;
+	buf_cache = (char *)malloc(sizeof(char)
+				* (mem_len(line) + mem_len(buf) + 1));
+	if (!buf_cache)
+		return (NULL);
 	while (line && line[i])
 	{
-		cache[i] = line[i];
+		buf_cache[i] = line[i];
 		i++;
 	}
+	free(line);
 	while (*buf)
 	{
-		if (*ln_check > 0)
-			*cpy_buf++ = *buf;
-		cache[i++] = *buf;
-		*ln_check += (*buf == '\n');
+		if (*line_found == 1)
+			*new_buf++ = *buf;
+		else
+			buf_cache[i++] = *buf;
+		if (*buf == '\n')
+			*line_found = 1;
 		*buf++ = 0;
 	}
-	free(line);
-	cache[i] = '\0';
-	return (cache);
+	buf_cache[i] = '\0';
+	return (buf_cache);
 }
 
-int	s_len(char *s)
+ssize_t	mem_len(char *s)
 {
-	int	i;
+	ssize_t	len;
 
 	if (!s || !*s)
 		return (0);
-	i = 0;
-	while (s[i])
+	len = 0;
+	while (s[len])
 	{
-		if (s[i++] == '\n')
-			break ;
-		i++;
+		if (s[len] == '\n')
+			return (len + 1);
+		len++;
 	}
-	return (i);
+	return (len);
 }
