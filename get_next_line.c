@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:35 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/21 00:48:18 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/21 00:59:14 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_next_line(int fd)
 	while (read(fd, buf, BUFFER_SIZE))
 	{
 		line = save_line(line, buf, buf, &line_found);
-		if (line_found || buf[i])
+		if (line_found)
 			break ;
 	}
 	return (line);
