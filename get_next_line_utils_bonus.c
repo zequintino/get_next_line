@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/10 14:15:45 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/21 16:43:25 by jquintin         ###   ########.fr       */
+/*   Created: 2022/11/21 13:40:30 by jquintin          #+#    #+#             */
+/*   Updated: 2022/11/21 17:49:44 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*buf_leftover(char *line, char *buf, int *line_found)
 {

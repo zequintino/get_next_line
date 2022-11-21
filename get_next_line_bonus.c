@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/10 14:15:35 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/21 17:46:49 by jquintin         ###   ########.fr       */
+/*   Created: 2022/11/21 13:38:56 by jquintin          #+#    #+#             */
+/*   Updated: 2022/11/21 17:51:10 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE + 1];
+	static char	buf[FOPEN_MAX][BUFFER_SIZE + 1];
 	char		*line;
 	int			line_found;
 	ssize_t		rd_len;
@@ -22,16 +22,16 @@ char	*get_next_line(int fd)
 	line_found = 0;
 	if (fd < 0 || fd > FOPEN_MAX || BUFFER_SIZE < 1)
 		return (NULL);
-	line = buf_leftover(0, buf, &line_found);
+	line = buf_leftover(0, buf[fd], &line_found);
 	if (line_found)
 		return (line);
-	rd_len = read(fd, buf, BUFFER_SIZE);
+	rd_len = read(fd, buf[fd], BUFFER_SIZE);
 	while (rd_len > 0 && line_found == 0)
 	{
-		line = save_line(line, buf, buf, &line_found);
+		line = save_line(line, buf[fd], buf[fd], &line_found);
 		if (line_found)
 			break ;
-		rd_len = read(fd, buf, BUFFER_SIZE);
+		rd_len = read(fd, buf[fd], BUFFER_SIZE);
 	}
 	if (rd_len < 0 && line)
 	{
@@ -45,7 +45,19 @@ char	*get_next_line(int fd)
 {
 	char	*line = NULL;
 	int		fd = open("gnl_test", O_RDONLY);
+	int		fd2 = open("gnl_test2", O_RDONLY);
 
+	line = get_next_line(fd);
+	printf("%s", line);
+	free(line);
+	line = get_next_line(fd2);
+	printf("%s", line);
+	free(line);
+	while((line = get_next_line(fd2)))
+	{
+		printf("%s", line);
+		free(line);
+	}
 	while((line = get_next_line(fd)))
 	{
 		printf("%s", line);
