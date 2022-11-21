@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/15 11:50:13 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/20 01:36:20 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/20 21:26:07 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*save_line(char *line, char *new_buf, char *buf, int *line_feed);
+char	*buf_leftover(char *line, char *buf, int *line_found);
+char	*save_line(char *line, char *new_buf, char *buf, int *line_found);
 ssize_t	mem_len(char *s);
 
 #endif

@@ -6,26 +6,35 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:45 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/20 03:07:44 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/20 21:47:44 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+char	*buf_leftover(char *line, char *buf, int *line_found)
+{
+	while (*buf)
+	{
+		line = save_line(line, buf, buf, line_found);
+		if (line_found || *buf)
+			break ;
+	}
+	return (line);
+}
+
 char	*save_line(char *line, char *new_buf, char *buf, int *line_found)
 {
-	char	*buf_cache;
+	char	*cache;
 	int		i;
 
 	i = 0;
-	*line_found = 0;
-	buf_cache = (char *)malloc(sizeof(char)
-				* (mem_len(line) + mem_len(buf) + 1));
-	if (!buf_cache)
+	cache = (char *)malloc(sizeof(char) * (mem_len(line) + mem_len(buf) + 1));
+	if (!cache)
 		return (NULL);
 	while (line && line[i])
 	{
-		buf_cache[i] = line[i];
+		cache[i] = line[i];
 		i++;
 	}
 	free(line);
@@ -34,13 +43,13 @@ char	*save_line(char *line, char *new_buf, char *buf, int *line_found)
 		if (*line_found == 1)
 			*new_buf++ = *buf;
 		else
-			buf_cache[i++] = *buf;
+			cache[i++] = *buf;
 		if (*buf == '\n')
 			*line_found = 1;
 		*buf++ = 0;
 	}
-	buf_cache[i] = '\0';
-	return (buf_cache);
+	cache[i] = '\0';
+	return (cache);
 }
 
 ssize_t	mem_len(char *s)

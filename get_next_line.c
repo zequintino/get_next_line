@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/10 14:15:35 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/20 01:27:32 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/21 00:48:18 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,15 @@ char	*get_next_line(int fd)
 	i = 0;
 	line_found = 0;
 	line = NULL;
-	if (read(fd, 0, 0) < 0 || BUFFER_SIZE < 1)
+	if (read(fd, 0, 0) || BUFFER_SIZE < 1)
 	{
 		while (*buf)
 			buf[i++] = 0;
 		return (NULL);
 	}
-	while (*buf)
-	{
-		line = save_line(line, buf, buf, &line_found);
-		if (line_found || *buf)
-			return (line);
-	}
+	line = buf_leftover(line, buf, &line_found);
+	if (line_found)
+		return (line);
 	while (read(fd, buf, BUFFER_SIZE))
 	{
 		line = save_line(line, buf, buf, &line_found);
@@ -50,7 +47,7 @@ char	*get_next_line(int fd)
 
 	while((line = get_next_line(fd)))
 	{
-		printf("\n(after fct call) = %s", line);
+		printf("%s", line);
 		free(line);
 	}
 	return 0;
