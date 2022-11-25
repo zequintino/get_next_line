@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 13:38:56 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/21 17:51:10 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/25 17:49:12 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,42 +26,17 @@ char	*get_next_line(int fd)
 	if (line_found)
 		return (line);
 	rd_len = read(fd, buf[fd], BUFFER_SIZE);
-	while (rd_len > 0 && line_found == 0)
+	while (rd_len > 0)
 	{
 		line = save_line(line, buf[fd], buf[fd], &line_found);
 		if (line_found)
 			break ;
 		rd_len = read(fd, buf[fd], BUFFER_SIZE);
 	}
-	if (rd_len < 0 && line)
+	if (rd_len < 0)
 	{
 		free(line);
 		return (NULL);
 	}
 	return (line);
 }
-
-/* int	main(void)
-{
-	char	*line = NULL;
-	int		fd = open("gnl_test", O_RDONLY);
-	int		fd2 = open("gnl_test2", O_RDONLY);
-
-	line = get_next_line(fd);
-	printf("%s", line);
-	free(line);
-	line = get_next_line(fd2);
-	printf("%s", line);
-	free(line);
-	while((line = get_next_line(fd2)))
-	{
-		printf("%s", line);
-		free(line);
-	}
-	while((line = get_next_line(fd)))
-	{
-		printf("%s", line);
-		free(line);
-	}
-	return 0;
-} */

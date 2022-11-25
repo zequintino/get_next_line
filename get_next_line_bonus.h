@@ -6,7 +6,7 @@
 /*   By: jquintin <jquintin@student.42lisboa.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/21 13:39:45 by jquintin          #+#    #+#             */
-/*   Updated: 2022/11/21 17:48:46 by jquintin         ###   ########.fr       */
+/*   Updated: 2022/11/25 10:36:49 by jquintin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <stdio.h>
 
 # ifndef  BUFFER_SIZE
-#  define BUFFER_SIZE 420
+#  define BUFFER_SIZE 42
 
 # endif
 
